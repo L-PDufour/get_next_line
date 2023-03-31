@@ -6,7 +6,7 @@
 /*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:48 by leon              #+#    #+#             */
-/*   Updated: 2023/03/30 09:03:26 by leon             ###   ########.fr       */
+/*   Updated: 2023/03/31 14:36:09 by leon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,11 @@
 # endif
 
 char	*get_next_line(int fd);
+int		newline_check(char *s);
+char	*return_line(char *s);
+char	*free_stash(char *s);
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup(const char *s);
 
 #endif

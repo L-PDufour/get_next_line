@@ -1,26 +1,24 @@
 #include "get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "get_next_line.c"
+#include "get_next_line_utils.c"
 
 
 
 int	main(int argc, char **argv)
 {
 	int		fd;
-	int		i;
-	char	line;
-	static char saved;
-	char *test;
-	i = 0;
+	char	*line;
+
+	(void)argc;
 	fd = open("test.txt", O_RDONLY);
-	while (i < 2)
+	line = "";
+	while (line != NULL) //
 	{
-		read(fd, line, BUFFER_SIZE);
-		test = ft_strjoin(saved , line);
-		printf("%s", test);
-		//  free(line);
-		i++;
+		line = get_next_line(fd);
+		printf("%s", line);
 	}
-	close(fd);
+	fd = close(fd);
 	return (0);
 }
