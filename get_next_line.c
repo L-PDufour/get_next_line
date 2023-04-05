@@ -6,11 +6,12 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 14:17:31 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 14:50:12 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 // #include "get_next_line_utils.c"
 
 char	*extract_line(char *str)
@@ -25,7 +26,7 @@ char	*extract_line(char *str)
 		return (NULL);
 	while (str[len] && str[len] != '\n')
 		len++;
-	line = malloc(sizeof(char) * (len + 2)); //TODO Leak problems
+	line = malloc(sizeof(char) * (len + 2));
 	if (!line)
 		return (NULL);
 	while (str[i] && str[i] != '\n')
@@ -42,10 +43,10 @@ char	*extract_line(char *str)
 	return (line);
 }
 
-char *fill_stash(char *stash, int fd)
+char	*fill_stash(char *stash, int fd)
 {
-	char		*buffer;
-	int			read_bytes;
+	char	*buffer;
+	int		read_bytes;
 
 	read_bytes = 1;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -60,44 +61,40 @@ char *fill_stash(char *stash, int fd)
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
-		stash = ft_strjoin(stash, buffer); //TODO Leak problems
+		stash = ft_strjoin(stash, buffer);
 	}
-	free (buffer);
+	free(buffer);
 	return (stash);
 }
 
-char *clean_stash(char *str)
+char	*clean_stash(char *str)
 {
-    char *new_stash;
-	int i;
-	int j;
+	char	*new_stash;
+	int		i;
+	int		j;
 
-    i = 0;
+	i = 0;
 	j = 0;
 	if (!str)
-        return (NULL);
-
-    while (str[i] && str[i] != '\n')
-        i++;
+		return (NULL);
+	while (str[i] && str[i] != '\n')
+		i++;
 	if (!str[i])
 	{
 		free(str);
 		return (NULL);
 	}
-    new_stash = malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
-    if (!new_stash)
-        return (NULL);
+	new_stash = malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
+	if (!new_stash)
+		return (NULL);
 	i++;
-	while(str[i])
+	while (str[i])
 		new_stash[j++] = str[i++];
 	new_stash[j] = '\0';
 	free(str);
 	return (new_stash);
-
 }
 
-// Dois-je free stash un moment donné ?
-// Je dois sortir de ma boucle si vide
 char	*get_next_line(int fd)
 {
 	char		*line;
@@ -109,8 +106,6 @@ char	*get_next_line(int fd)
 	if (!stash)
 		return (NULL);
 	line = extract_line(stash);
-	stash = clean_stash(stash); //TODO Leak problems
+	stash = clean_stash(stash);
 	return (line);
 }
-
-
