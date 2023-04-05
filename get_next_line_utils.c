@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:42 by leon              #+#    #+#             */
-/*   Updated: 2023/04/04 15:33:02 by leon             ###   ########.fr       */
+/*   Updated: 2023/04/05 10:59:36 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*ft_strdup(const char *s)
 	size_t	len;
 	char	*ptr;
 
+	if (!s)
+		return (NULL);
 	ptr = NULL;
 	len = 0;
 	while (s[len])
@@ -52,6 +54,7 @@ char	*ft_strdup(const char *s)
 		i++;
 	}
 	ptr[i] = '\0';
+	// free(s);
 	return (ptr);
 }
 
@@ -73,28 +76,25 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	i = 0;
-	j = 0;
-	//   if (!s1)
-	//   {
-	// 	s1 = malloc(sizeof(char) * 1);
-	// 	s1 = ft
+	i = -1;
+	j = -1;
+	if (!s1)
+		s1 = ft_strdup("");
 	if (!s2)
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1)); // TODO Leak Problem
 	if (!str)
 		return (NULL);
-	while (s1[i] != '\0')
+	while (s1[++i] != '\0')
 	{
 		str[i] = s1[i];
-		i++;
 	}
-	while (s2[j] != '\0')
+	while (s2[++j] != '\0')
 	{
-		str[i] = s2[j];
-		i++;
-		j++;
+		str[i++] = s2[j];
 	}
 	str[i] = '\0';
+	free(s1);
+	// free(s2);
 	return (str);
 }
