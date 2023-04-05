@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
+/*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 15:24:44 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 19:39:07 by leon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// #include "get_next_line_utils.c"
+#include "get_next_line_utils.c"
 
 char	*extract_line(char *str)
 {
@@ -27,7 +27,7 @@ char	*extract_line(char *str)
 	while (str[i] != '\0' && str[i] != '\n')
 		i++;
 	i++;
-	line = malloc(sizeof(char) * (i + 1));
+	line = (char *)malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -45,15 +45,16 @@ char	*fill_stash(char *stash, int fd)
 	int		read_bytes;
 
 	read_bytes = 1;
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	while (!ft_strchr(stash, '\n') && read_bytes > 0)
+	while (!ft_strchr(stash, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
 		{
 			free(buffer);
+			free(stash);
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
@@ -80,7 +81,7 @@ char	*clean_stash(char *str)
 		free(str);
 		return (NULL);
 	}
-	new_stash = malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
+	new_stash = (char *)malloc(sizeof(char) * ((ft_strlen(str) - i + 1)));
 	if (!new_stash)
 		return (NULL);
 	i++;
