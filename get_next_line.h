@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:48 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 09:51:25 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 13:11:24 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd);
@@ -29,5 +29,6 @@ char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*extract_line(char *str);
 char	*clean_stash(char *str);
+char 	*fill_stash(char *stash, int fd);
 
 #endif

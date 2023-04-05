@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 11:02:53 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 14:17:31 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ char	*extract_line(char *str)
 
 	i = 0;
 	len = 0;
-	if (!str)
+	if (!str[i])
 		return (NULL);
 	while (str[len] && str[len] != '\n')
 		len++;
-	line = malloc(sizeof(char) * (len + 2));
+	line = malloc(sizeof(char) * (len + 2)); //TODO Leak problems
 	if (!line)
 		return (NULL);
 	while (str[i] && str[i] != '\n')
@@ -42,38 +42,11 @@ char	*extract_line(char *str)
 	return (line);
 }
 
-char	*clean_stash(char *str)
+char *fill_stash(char *stash, int fd)
 {
-	char	*new_stash;
-	int		len;
-	int		new_stash_len;
-
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	new_stash_len = 0;
-	while (str[new_stash_len] && str[new_stash_len] != '\n')
-		new_stash_len++;
-	new_stash = malloc(sizeof(char) * (len - new_stash_len + 1));
-	if (!new_stash)
-		return (NULL);
-	len = 0;
-	while (str[++new_stash_len]) // TODO Leak problems
-		new_stash[len++] = str[new_stash_len];
-	new_stash[len] = '\0';
-	free(str);
-	return (new_stash);
-}
-// Dois-je free stash un moment donné ?
-char	*get_next_line(int fd)
-{
-	char		*line;
-	static char	*stash;
 	char		*buffer;
 	int			read_bytes;
 
-	if (fd < 0 || fd > 1023 || BUFFER_SIZE < 0)
-		return (NULL);
 	read_bytes = 1;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
@@ -81,13 +54,63 @@ char	*get_next_line(int fd)
 	while (!ft_strchr(stash, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes <= 0)
-			break;
+		if (read_bytes == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		buffer[read_bytes] = '\0';
 		stash = ft_strjoin(stash, buffer); //TODO Leak problems
 	}
+	free (buffer);
+	return (stash);
+}
+
+char *clean_stash(char *str)
+{
+    char *new_stash;
+	int i;
+	int j;
+
+    i = 0;
+	j = 0;
+	if (!str)
+        return (NULL);
+
+    while (str[i] && str[i] != '\n')
+        i++;
+	if (!str[i])
+	{
+		free(str);
+		return (NULL);
+	}
+    new_stash = malloc(sizeof(char) * ((ft_strlen(str) - i) + 1));
+    if (!new_stash)
+        return (NULL);
+	i++;
+	while(str[i])
+		new_stash[j++] = str[i++];
+	new_stash[j] = '\0';
+	free(str);
+	return (new_stash);
+
+}
+
+// Dois-je free stash un moment donné ?
+// Je dois sortir de ma boucle si vide
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*stash;
+
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stash = fill_stash(stash, fd);
+	if (!stash)
+		return (NULL);
 	line = extract_line(stash);
 	stash = clean_stash(stash); //TODO Leak problems
-	free(buffer);
 	return (line);
 }
+
+

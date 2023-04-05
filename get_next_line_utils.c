@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:42 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 10:59:36 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 14:03:22 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,20 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = -1;
 	j = -1;
 	if (!s1)
-		s1 = ft_strdup("");
-	if (!s2)
+	{
+		s1 = malloc(sizeof(char));
+		// s1[0] = '\0';
+	}
+	if (! s1 ||!s2)
 		return (NULL);
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1)); // TODO Leak Problem
 	if (!str)
 		return (NULL);
 	while (s1[++i] != '\0')
-	{
 		str[i] = s1[i];
-	}
 	while (s2[++j] != '\0')
-	{
 		str[i++] = s2[j];
-	}
 	str[i] = '\0';
 	free(s1);
-	// free(s2);
 	return (str);
 }

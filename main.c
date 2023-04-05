@@ -16,3 +16,4 @@ int	main(void)
 	fd = close(fd);
 	return (0);
 }
+
