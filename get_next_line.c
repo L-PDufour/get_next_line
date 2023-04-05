@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 14:57:14 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 15:15:24 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,23 @@ char	*extract_line(char *str)
 {
 	char	*line;
 	int		i;
-	int		len;
+	int		j;
 
 	i = 0;
-	len = 0;
+	j = 0;
 	if (!str[i])
 		return (NULL);
-	while (str[len] && str[len] != '\n')
-		len++;
-	line = malloc(sizeof(char) * (len + 2));
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	i++;
+	line = malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
+	i = 0;
 	while (str[i] && str[i] != '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
+		line[j++] = str[i++];
 	if (str[i] == '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
+		line[j++] = str[i++];
 	line[i] = '\0';
 	return (line);
 }
