@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 14:50:12 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 14:57:14 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,17 @@ char	*clean_stash(char *str)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*stash;
+	static char	*stash = NULL;
 
+	line = NULL;
 	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (read(fd , line, 0) < 0)
+	{
+		free(stash);
+		stash = NULL;
+		return (stash);
+	}
 	stash = fill_stash(stash, fd);
 	if (!stash)
 		return (NULL);
