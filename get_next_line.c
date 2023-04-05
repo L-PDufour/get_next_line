@@ -6,7 +6,7 @@
 /*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 09:49:41 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 15:15:24 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/05 15:24:44 by ldufour          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	*extract_line(char *str)
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != '\n')
+	while (str[i] != '\0' && str[i] != '\n')
 		line[j++] = str[i++];
 	if (str[i] == '\n')
 		line[j++] = str[i++];
-	line[i] = '\0';
+	line[j] = '\0';
 	return (line);
 }
 
@@ -51,7 +51,7 @@ char	*fill_stash(char *stash, int fd)
 	while (!ft_strchr(stash, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
+		if (read_bytes < 0)
 		{
 			free(buffer);
 			return (NULL);
