@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldufour <ldufour@student.42.fr>            +#+  +:+       +#+        */
+/*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:48 by leon              #+#    #+#             */
-/*   Updated: 2023/04/05 14:49:21 by ldufour          ###   ########.fr       */
+/*   Updated: 2023/04/08 16:05:31 by leon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ char	*ft_strchr(const char *s, int c);
 char	*extract_line(char *str);
 char	*clean_stash(char *str);
 char	*fill_stash(char *stash, int fd);
+void	ft_free(char **str);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 09:14:39 by aperez-b          #+#    #+#             */
-/*   Updated: 2023/04/06 16:39:25 by leon             ###   ########.fr       */
+/*   Updated: 2023/04/08 16:29:56 by leon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(void)
 	char	*line[4096];
 
 	i = 1;
-	fd_1 = open("tests/the-king-james-bible.txt", \
+	fd_1 = open("tests/empty.txt", \
 					O_RDONLY);
 	while (1)
 	{
