@@ -6,16 +6,17 @@
 /*   By: leon <leon@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:36:42 by leon              #+#    #+#             */
-/*   Updated: 2023/04/08 17:10:18 by leon             ###   ########.fr       */
+/*   Updated: 2023/04/08 19:05:18 by leon             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_free(char **str)
+char	*ft_free(char **str)
 {
 	free(*str);
 	*str = NULL;
+	return (NULL);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -58,29 +59,62 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = -1;
 	if (!s1)
 	{
-		s1 = malloc(sizeof(char) * 1);
-			if(!s1)
-			{
-				ft_free(&s1);
-				return (NULL);
-			}
+		s1 = ft_calloc(sizeof(char), 1);
+		if (!s1)
+			return (0);
 		s1[0] = 0;
 	}
-	if (!s1 || !s2)
-		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = ft_calloc(sizeof(char), (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
-	{
-		ft_free(&str);
-		return (NULL);
-	}
-	while (s1[++i] != '\0')
+		return (ft_free(&s1));
+	while (s1[++i])
 		str[i] = s1[i];
-	while (s2[++j] != '\0')
-		str[i++] = s2[j];
-	str[i] = 0;
-	ft_free(&s1);
+	while (s2[++j])
+		str[i + j] = s2[j];
+	free(s1);
 	return (str);
 }
 
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*ptr;
+	size_t	i;
 
+	i = 0;
+	ptr = malloc(count * size);
+	if (ptr == NULL)
+		return (0);
+	while (i < count * size)
+	{
+		ptr[i] = 0;
+		i++;
+	}
+	return (ptr);
+}
+
+char	*ft_substr(char *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	char	*res;
+
+	i = 0;
+	if (!s)
+		return (0);
+	if (start > ft_strlen(s))
+	{
+		res = malloc(sizeof(char) * (1));
+		if (!res)
+			return (NULL);
+		res[0] = '\0';
+		return (res);
+	}
+	if (ft_strlen(s) - start < len)
+		len = ft_strlen(s) - start;
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (NULL);
+	while (start < ft_strlen(s) && i < len && s[start])
+		res[i++] = s[start++];
+	res[i] = '\0';
+	return (res);
+}
